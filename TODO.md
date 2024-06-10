@@ -1,3 +1,4 @@
+- [x] Add highscore
 - [ ] Make the snake move smoothly: You can still be on grid but move each part
       smoothly to the next cell. Might be tricky to make 'feel good'. _hard_
 - [ ] Add controller support: see rl.IsGamepadButtonPressed _easy_
