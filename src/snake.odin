@@ -19,6 +19,7 @@ snake_length: int
 move_direction: Vec2i
 game_over: bool = false
 food_pos: Vec2i
+high_score: int = 0
 
 place_food :: proc() {
 	occupied: [GRID_WIDTH][GRID_WIDTH]bool
@@ -67,6 +68,7 @@ main :: proc() {
 
 	eat_sound := rl.LoadSound("assets/eat.wav")
 	crash_sound := rl.LoadSound("assets/crash.wav")
+	high_score_sound := rl.LoadSound("assets/high_score.wav")
 
 	for !rl.WindowShouldClose() {
 		if rl.IsKeyDown(.UP) || rl.IsKeyDown(.W) {
@@ -179,6 +181,21 @@ main :: proc() {
 		score := snake_length - 3
 		score_str := fmt.ctprintf("Score: %v", score)
 		rl.DrawText(score_str, 4, CANVAS_SIZE - 14, 10, rl.GRAY)
+
+		if score > high_score {
+			high_score = score
+			rl.PlaySound(high_score_sound)
+		}
+
+		high_score_str := fmt.ctprintf("High Score: %v", high_score)
+		high_score_width := rl.MeasureText(high_score_str, 10)
+		rl.DrawText(
+			high_score_str,
+			CANVAS_SIZE - high_score_width - 4,
+			CANVAS_SIZE - 14,
+			10,
+			rl.WHITE,
+		)
 
 		rl.EndMode2D()
 		rl.EndDrawing()
