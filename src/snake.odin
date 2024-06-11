@@ -21,6 +21,8 @@ game_over: bool = false
 food_pos: Vec2i
 high_score: int = 0
 
+gamepad: i32
+
 place_food :: proc() {
 	occupied: [GRID_WIDTH][GRID_WIDTH]bool
 
@@ -71,16 +73,28 @@ main :: proc() {
 	high_score_sound := rl.LoadSound("assets/high_score.wav")
 
 	for !rl.WindowShouldClose() {
-		if rl.IsKeyDown(.UP) || rl.IsKeyDown(.W) {
+		if rl.IsKeyDown(.UP) ||
+		   rl.IsKeyDown(.W) ||
+		   rl.IsGamepadButtonDown(gamepad, .LEFT_FACE_UP) ||
+		   rl.GetGamepadAxisMovement(gamepad, .LEFT_Y) < -0.3 {
 			move_direction = {0, -1}
-		} else if rl.IsKeyDown(.DOWN) || rl.IsKeyDown(.S) {
+		} else if rl.IsKeyDown(.DOWN) ||
+		   rl.IsKeyDown(.S) ||
+		   rl.IsGamepadButtonDown(gamepad, .LEFT_FACE_DOWN) ||
+		   rl.GetGamepadAxisMovement(gamepad, .LEFT_Y) > 0.3 {
 			move_direction = {0, 1}
-		} else if rl.IsKeyDown(.LEFT) || rl.IsKeyDown(.A) {
+		} else if rl.IsKeyDown(.LEFT) ||
+		   rl.IsKeyDown(.A) ||
+		   rl.IsGamepadButtonDown(gamepad, .LEFT_FACE_LEFT) ||
+		   rl.GetGamepadAxisMovement(gamepad, .LEFT_X) < -0.3 {
 			move_direction = {-1, 0}
-		} else if rl.IsKeyDown(.RIGHT) || rl.IsKeyDown(.D) {
+		} else if rl.IsKeyDown(.RIGHT) ||
+		   rl.IsKeyDown(.D) ||
+		   rl.IsGamepadButtonDown(gamepad, .LEFT_FACE_RIGHT) ||
+		   rl.GetGamepadAxisMovement(gamepad, .LEFT_X) > 0.3 {
 			move_direction = {1, 0}
 		}
-		if rl.IsKeyPressed(.ENTER) {
+		if rl.IsKeyPressed(.ENTER) || rl.IsGamepadButtonPressed(gamepad, .RIGHT_FACE_DOWN) {
 			restart()
 		}
 
